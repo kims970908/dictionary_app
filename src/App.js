@@ -27,8 +27,16 @@ const App = () => {
       .catch((err) => setError(err));
   };
 
+  const reset = () => {
+    setIsSpeaking("");
+    setError("");
+    setMeanings([]);
+    setPhonetics([]);
+    setWord("");
+  };
+
   useEffect(() => {
-    if (!text.trim()) return;
+    if (!text.trim()) return reset();
 
     const debounce = setTimeout(() => {
       dictionaryApi(text);
@@ -97,12 +105,14 @@ const App = () => {
         </div>
       </form>
 
-      <Result
-        word={word}
-        phonetics={phonetics}
-        meanings={meanings}
-        setText={setText}
-      />
+      {text.trim() !== "" && !error && (
+        <Result
+          word={word}
+          phonetics={phonetics}
+          meanings={meanings}
+          setText={setText}
+        />
+      )}
     </div>
   );
 };
